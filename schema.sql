@@ -26,18 +26,9 @@ CREATE TABLE dept_manager (
     PRIMARY KEY (emp_no, dept_no)
 );
 
-CREATE TABLE salaries (
- 	emp_no INT NOT NULL,
-  	salary INT NOT NULL,
-  	from_date DATE NOT NULL,
-  	to_date DATE NOT NULL,
- 	FOREIGN KEY (emp_no) REFERENCES employees (emp_no),
-  	PRIMARY KEY (emp_no)
-);
-
 CREATE TABLE dept_emp (
-	dept_no VARCHAR(4) NOT NULL,
 	emp_no INT NOT NULL,
+	dept_no VARCHAR(4) NOT NULL,
 	from_date DATE NOT NULL,
 	to_date DATE NOT NULL,
 	FOREIGN KEY (emp_no) REFERENCES employees (emp_no),
@@ -54,4 +45,24 @@ CREATE TABLE titles (
 	PRIMARY KEY (emp_no)
 );
 
-SELECT * FROM departments;
+CREATE TABLE salaries (
+ 	emp_no INT NOT NULL,
+  	salary INT NOT NULL,
+  	from_date DATE NOT NULL,
+  	to_date DATE NOT NULL,
+ 	FOREIGN KEY (emp_no) REFERENCES employees (emp_no),
+  	PRIMARY KEY (emp_no)
+);
+
+CREATE TABLE IF NOT EXISTS public.titles
+(
+    emp_no integer NOT NULL,
+    title character varying COLLATE pg_catalog."default" NOT NULL,
+    from_date date NOT NULL,
+    to_date date NOT NULL,
+    CONSTRAINT pk_titles PRIMARY KEY (emp_no, from_date, to_date),
+    CONSTRAINT fk_titles_emp_no FOREIGN KEY (emp_no)
+        REFERENCES public.employees (emp_no) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
